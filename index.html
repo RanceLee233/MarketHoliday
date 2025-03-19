@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票市场休假提醒</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .red-text {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>股票市场休假提醒</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>市场</th>
+                <th>休假内容</th>
+                <th>倒数日期</th>
+                <th>休假日期</th>
+                <th>休假天数</th>
+            </tr>
+        </thead>
+        <tbody id="holiday-table-body">
+            <tr>
+                <td>A股</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+            </tr>
+            <tr>
+                <td>港股</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+            </tr>
+            <tr>
+                <td>美股</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+                <td>加载中...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const csvData = `市场,开始日期,结束日期,节假日名称,持续时间
+A股,2025-01-01,2025-01-01,元旦,1天:cite[8]
+A股,2025-01-28,2025-02-04,春节,8天:cite[1]:cite[3]:cite[8]
+A股,2025-04-04,2025-04-06,清明节,3天:cite[8]
+A股,2025-05-01,2025-05-05,劳动节,5天:cite[8]
+A股,2025-05-31,2025-06-02,端午节,3天:cite[8]
+A股,2025-10-01,2025-10-08,国庆节及中秋节,8天:cite[8]
+港股,2025-01-01,2025-01-01,元旦,1天:cite[4]:cite[6]
+港股,2025-01-28,2025-01-28,春节（半日休市）,0.5天:cite[3]:cite[5]
+港股,2025-01-29,2025-02-02,春节,5天:cite[3]:cite[4]
+港股,2025-04-04,2025-04-06,清明节,3天:cite[4]:cite[6]
+港股,2025-04-18,2025-04-18,耶稣受难日,1天:cite[4]
+港股,2025-04-21,2025-04-21,复活节,1天:cite[4]
+港股,2025-05-01,2025-05-05,劳动节,5天:cite[4]:cite[6]
+港股,2025-05-31,2025-05-31,端午节,1天:cite[4]:cite[6]
+港股,2025-07-01,2025-07-01,香港回归纪念日,1天:cite[4]
+港股,2025-10-01,2025-10-01,国庆节,1天:cite[4]
+港股,2025-10-07,2025-10-07,中秋节翌日,1天:cite[4]
+港股,2025-10-29,2025-10-29,重阳节,1天:cite[4]
+港股,2025-12-24,2025-12-24,平安夜（半日休市）,0.5天:cite[4]
+港股,2025-12-25,2025-12-26,圣诞节,2天:cite[4]
+美股,2025-01-01,2025-01-01,元旦,1天:cite[4]
+美股,2025-01-17,2025-01-17,马丁·路德·金纪念日,1天:cite[4]
+美股,2025-02-17,2025-02-17,华盛顿诞辰纪念日,1天:cite[4]
+美股,2025-04-18,2025-04-18,耶稣受难日,1天:cite[4]
+美股,2025-04-21,2025-04-21,复活节,1天:cite[4]
+美股,2025-05-26,2025-05-26,阵亡将士纪念日,1天:cite[4]
+美股,2025-06-19,2025-06-19,六月节,1天:cite[4]
+美股,2025-07-03,2025-07-04,独立日,1.5天（含半日休市）:cite[4]
+美股,2025-09-01,2025-09-01,劳工节,1天:cite[4]
+美股,2025-11-27,2025-11-28,感恩节,1.5天（含半日休市）:cite[4]
+美股,2025-12-24,2025-12-25,圣诞节,1.5天（含半日休市）:cite[4]`;
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const headers = lines[0].split(',');
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                const currentLine = lines[i].split(',');
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentLine[j];
+                }
+                data.push(obj);
+            }
+            return data;
+        }
+
+        function findNextHoliday(market, data) {
+            const today = new Date();
+            let nextHoliday = null;
+            for (let i = 0; i < data.length; i++) {
+                const holiday = data[i];
+                if (holiday['市场'] === market) {
+                    const startDate = new Date(holiday['开始日期']);
+                    if (startDate > today) {
+                        if (!nextHoliday || startDate < new Date(nextHoliday['开始日期'])) {
+                            nextHoliday = holiday;
+                        }
+                    }
+                }
+            }
+            return nextHoliday;
+        }
+
+        function calculateDaysUntilHoliday(startDate) {
+            const today = new Date();
+            const holidayStart = new Date(startDate);
+            const oneDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
+            return Math.round((holidayStart - today) / oneDay);
+        }
+
+        function updateHolidayTable() {
+            const parsedData = parseCSV(csvData);
+            const tableBody = document.getElementById('holiday-table-body');
+            const rows = tableBody.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const market = rows[i].cells[0].textContent;
+                const nextHoliday = findNextHoliday(market, parsedData);
+                if (nextHoliday) {
+                    rows[i].cells[1].textContent = nextHoliday['节假日名称'];
+                    const daysUntilHoliday = calculateDaysUntilHoliday(nextHoliday['开始日期']);
+                    const countdownCell = rows[i].cells[2];
+                    countdownCell.textContent = daysUntilHoliday;
+                    if (daysUntilHoliday <= 5) {
+                        countdownCell.classList.add('red-text');
+                    } else {
+                        countdownCell.classList.remove('red-text');
+                    }
+                    const startDate = nextHoliday['开始日期'].replace(/-/g, '.');
+                    const endDate = nextHoliday['结束日期'].replace(/-/g, '.');
+                    rows[i].cells[3].textContent = `${startDate}-${endDate}`;
+                    const duration = nextHoliday['持续时间'].split(':')[0];
+                    rows[i].cells[4].textContent = duration;
+                } else {
+                    rows[i].cells[1].textContent = '暂无休假信息';
+                    rows[i].cells[2].textContent = '暂无休假信息';
+                    rows[i].cells[3].textContent = '暂无休假信息';
+                    rows[i].cells[4].textContent = '暂无休假信息';
+                }
+            }
+        }
+
+        // 页面加载时更新一次
+        updateHolidayTable();
+
+        // 每隔一小时更新一次
+        setInterval(updateHolidayTable, 60 * 60 * 1000);
+    </script>
+</body>
+
+</html>    
