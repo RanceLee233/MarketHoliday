@@ -1,190 +1,559 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>股票市场休假提醒</title>
+    <title>2025年全球股市休市日历（动态更新）</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #2a5298);
+            color: #333;
+            min-height: 100vh;
             padding: 20px;
         }
-
-        h1 {
-            text-align: center;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #e0e0ff;
+        }
+        
+        .current-date {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
             margin-top: 20px;
         }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+        
+        .market-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
         }
-
-        th {
-            background-color: #f2f2f2;
+        
+        .market-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
         }
-
-        .red-text {
-            color: red;
+        
+        .card-header {
+            padding: 25px 25px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .a-share .card-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .hk-stock .card-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        
+        .us-stock .card-header {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        
+        .card-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .holiday-info {
+            background: #f9f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .holiday-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+        
+        .info-value {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .days-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .countdown {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .countdown.urgent {
+            color: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .upcoming {
+            margin-top: 20px;
+        }
+        
+        .upcoming h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .holiday-list {
+            list-style: none;
+        }
+        
+        .holiday-list li {
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            background: #f8f9ff;
+            border-left: 4px solid #3498db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .holiday-list li:hover {
+            background: #edf2ff;
+            transform: translateX(5px);
+        }
+        
+        .holiday-date {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .holiday-reason {
+            color: #7f8c8d;
+        }
+        
+        .note {
+            background: #fff9e6;
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 25px;
+            font-size: 0.95rem;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        
+        @media (max-width: 768px) {
+            .market-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
         }
     </style>
 </head>
-
 <body>
-    <h1>股票市场休假提醒</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>市场</th>
-                <th>休假内容</th>
-                <th>倒数日期</th>
-                <th>休假日期</th>
-                <th>休假天数</th>
-            </tr>
-        </thead>
-        <tbody id="holiday-table-body">
-            <tr>
-                <td>A股</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-            </tr>
-            <tr>
-                <td>港股</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-            </tr>
-            <tr>
-                <td>美股</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-                <td>加载中...</td>
-            </tr>
-        </tbody>
-    </table>
-
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calendar-alt"></i> 2025年全球股市休市日历</h1>
+            <p>实时查看A股、港股及美股市场的休市安排，合理规划您的投资策略</p>
+            <div class="current-date">
+                当前日期：<span id="current-date">2025年5月29日</span>
+            </div>
+        </header>
+        
+        <div class="market-grid">
+            <!-- A股 -->
+            <div class="market-card a-share">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> A股市场</h2>
+                </div>
+                <div class="card-body">
+                    <div class="holiday-info">
+                        <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
+                        <div class="info-grid">
+                            <div class="info-label">距离休市：</div>
+                            <div class="info-value"><span class="countdown" id="countdown-a">2天</span></div>
+                            
+                            <div class="info-label">休市原因：</div>
+                            <div class="info-value">端午节</div>
+                            
+                            <div class="info-label">休市天数：</div>
+                            <div class="info-value"><span class="days-badge" style="background: #ffebee; color: #e74c3c;">3天</span></div>
+                            
+                            <div class="info-label">具体日期：</div>
+                            <div class="info-value">2025年5月31日（星期六）至6月2日（星期一）</div>
+                            
+                            <div class="info-label">开市时间：</div>
+                            <div class="info-value">2025年6月3日（星期二）</div>
+                        </div>
+                    </div>
+                    
+                    <div class="upcoming">
+                        <h3><i class="fas fa-calendar-day"></i> 其他重要休市安排</h3>
+                        <ul class="holiday-list">
+                            <li>
+                                <div>
+                                    <div class="holiday-date">10月1日（星期三）至10月8日（星期三）</div>
+                                    <div class="holiday-reason">国庆节/中秋节</div>
+                                </div>
+                                <span class="days-badge" style="background: #e3f2fd; color: #1976d2;">8天</span>
+                            </li>
+                            <li>
+                                <div>
+                                    <div class="holiday-date">1月28日（星期二）至2月4日（星期二）</div>
+                                    <div class="holiday-reason">春节</div>
+                                </div>
+                                <span class="days-badge" style="background: #e3f2fd; color: #1976d2;">8天</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note">
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>注意：</strong> A股在2025年劳动节期间（5月1日至5月5日）已休市5天。端午节休市后，下一次休市为国庆节/中秋节。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 港股 -->
+            <div class="market-card hk-stock">
+                <div class="card-header">
+                    <h2><i class="fas fa-building"></i> 港股市场</h2>
+                </div>
+                <div class="card-body">
+                    <div class="holiday-info">
+                        <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
+                        <div class="info-grid">
+                            <div class="info-label">距离休市：</div>
+                            <div class="info-value"><span class="countdown" id="countdown-hk">2天</span></div>
+                            
+                            <div class="info-label">休市原因：</div>
+                            <div class="info-value">端午节</div>
+                            
+                            <div class="info-label">休市天数：</div>
+                            <div class="info-value"><span class="days-badge" style="background: #e3f2fd; color: #2980b9;">1天</span></div>
+                            
+                            <div class="info-label">具体日期：</div>
+                            <div class="info-value">2025年5月31日（星期五）</div>
+                            
+                            <div class="info-label">开市时间：</div>
+                            <div class="info-value">2025年6月2日（星期一）*</div>
+                        </div>
+                    </div>
+                    
+                    <div class="upcoming">
+                        <h3><i class="fas fa-calendar-day"></i> 其他重要休市安排</h3>
+                        <ul class="holiday-list">
+                            <li>
+                                <div>
+                                    <div class="holiday-date">7月1日（星期二）</div>
+                                    <div class="holiday-reason">香港特别行政区成立纪念日</div>
+                                </div>
+                                <span class="days-badge" style="background: #e3f2fd; color: #2980b9;">1天</span>
+                            </li>
+                            <li>
+                                <div>
+                                    <div class="holiday-date">10月1日（星期三）、10月7日（星期二）</div>
+                                    <div class="holiday-reason">国庆节/中秋节</div>
+                                </div>
+                                <span class="days-badge" style="background: #e3f2fd; color: #2980b9;">2天</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note">
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>注意：</strong> 港股端午节仅5月31日（周五）休市，但因6月1日-2日为周末，实际连续休市3天（5月31日至6月2日），6月3日（星期二）起照常开市。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 美股 -->
+            <div class="market-card us-stock">
+                <div class="card-header">
+                    <h2><i class="fas fa-globe-americas"></i> 美股市场</h2>
+                </div>
+                <div class="card-body">
+                    <div class="holiday-info">
+                        <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
+                        <div class="info-grid">
+                            <div class="info-label">距离休市：</div>
+                            <div class="info-value"><span class="countdown" id="countdown-us">21天</span></div>
+                            
+                            <div class="info-label">休市原因：</div>
+                            <div class="info-value">六月节</div>
+                            
+                            <div class="info-label">休市天数：</div>
+                            <div class="info-value"><span class="days-badge" style="background: #e8f5e9; color: #2ecc71;">1天</span></div>
+                            
+                            <div class="info-label">具体日期：</div>
+                            <div class="info-value">2025年6月19日（星期四）</div>
+                            
+                            <div class="info-label">开市时间：</div>
+                            <div class="info-value">2025年6月20日（星期五）</div>
+                        </div>
+                    </div>
+                    
+                    <div class="upcoming">
+                        <h3><i class="fas fa-calendar-day"></i> 其他重要休市安排</h3>
+                        <ul class="holiday-list">
+                            <li>
+                                <div>
+                                    <div class="holiday-date">7月3日（星期四）下午、7月4日（星期五）</div>
+                                    <div class="holiday-reason">美国独立日</div>
+                                </div>
+                                <span class="days-badge" style="background: #e8f5e9; color: #2ecc71;">1.5天</span>
+                            </li>
+                            <li>
+                                <div>
+                                    <div class="holiday-date">9月1日（星期一）</div>
+                                    <div class="holiday-reason">美国劳工节</div>
+                                </div>
+                                <span class="days-badge" style="background: #e8f5e9; color: #2ecc71;">1天</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note">
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>注意：</strong> 美股在2025年5月26日（星期一）已休市（阵亡将士纪念日）。除公共假期外，美股通常在恶劣天气或重大突发事件时临时休市。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>数据来源：港美股2025年休市日历（华盛通）、证监会2025年休市安排通知、和讯网等公开信息</p>
+            <p>© 2025 全球股市休市日历 | 数据更新时间：<span id="update-time"></span></p>
+        </footer>
+    </div>
+    
     <script>
-        const csvData = `市场,开始日期,结束日期,节假日名称,持续时间
-A股,2025-01-01,2025-01-01,元旦,1天:cite[8]
-A股,2025-01-28,2025-02-04,春节,8天:cite[1]:cite[3]:cite[8]
-A股,2025-04-04,2025-04-06,清明节,3天:cite[8]
-A股,2025-05-01,2025-05-05,劳动节,5天:cite[8]
-A股,2025-05-31,2025-06-02,端午节,3天:cite[8]
-A股,2025-10-01,2025-10-08,国庆节及中秋节,8天:cite[8]
-港股,2025-01-01,2025-01-01,元旦,1天:cite[4]:cite[6]
-港股,2025-01-28,2025-01-28,春节（半日休市）,0.5天:cite[3]:cite[5]
-港股,2025-01-29,2025-02-02,春节,5天:cite[3]:cite[4]
-港股,2025-04-04,2025-04-06,清明节,3天:cite[4]:cite[6]
-港股,2025-04-18,2025-04-18,耶稣受难日,1天:cite[4]
-港股,2025-04-21,2025-04-21,复活节,1天:cite[4]
-港股,2025-05-01,2025-05-05,劳动节,5天:cite[4]:cite[6]
-港股,2025-05-31,2025-05-31,端午节,1天:cite[4]:cite[6]
-港股,2025-07-01,2025-07-01,香港回归纪念日,1天:cite[4]
-港股,2025-10-01,2025-10-01,国庆节,1天:cite[4]
-港股,2025-10-07,2025-10-07,中秋节翌日,1天:cite[4]
-港股,2025-10-29,2025-10-29,重阳节,1天:cite[4]
-港股,2025-12-24,2025-12-24,平安夜（半日休市）,0.5天:cite[4]
-港股,2025-12-25,2025-12-26,圣诞节,2天:cite[4]
-美股,2025-01-01,2025-01-01,元旦,1天:cite[4]
-美股,2025-01-17,2025-01-17,马丁·路德·金纪念日,1天:cite[4]
-美股,2025-02-17,2025-02-17,华盛顿诞辰纪念日,1天:cite[4]
-美股,2025-04-18,2025-04-18,耶稣受难日,1天:cite[4]
-美股,2025-04-21,2025-04-21,复活节,1天:cite[4]
-美股,2025-05-26,2025-05-26,阵亡将士纪念日,1天:cite[4]
-美股,2025-06-19,2025-06-19,六月节,1天:cite[4]
-美股,2025-07-03,2025-07-04,独立日,1.5天（含半日休市）:cite[4]
-美股,2025-09-01,2025-09-01,劳工节,1天:cite[4]
-美股,2025-11-27,2025-11-28,感恩节,1.5天（含半日休市）:cite[4]
-美股,2025-12-24,2025-12-25,圣诞节,1.5天（含半日休市）:cite[4]`;
-
-        function parseCSV(csv) {
-            const lines = csv.split('\n');
-            const headers = lines[0].split(',');
-            const data = [];
-            for (let i = 1; i < lines.length; i++) {
-                const currentLine = lines[i].split(',');
-                const obj = {};
-                for (let j = 0; j < headers.length; j++) {
-                    obj[headers[j]] = currentLine[j];
+        // 定义所有休市安排数据
+        const holidays = {
+            a: [
+                {
+                    reason: "端午节",
+                    startDate: new Date(2025, 4, 31), // 5月31日
+                    endDate: new Date(2025, 5, 2),    // 6月2日
+                    marketDays: 3,
+                    note: "A股在2025年劳动节期间（5月1日至5月5日）已休市5天"
+                },
+                {
+                    reason: "国庆节/中秋节",
+                    startDate: new Date(2025, 9, 1), // 10月1日
+                    endDate: new Date(2025, 9, 8),    // 10月8日
+                    marketDays: 8,
+                    note: "国庆节与中秋节合并休市"
                 }
-                data.push(obj);
-            }
-            return data;
-        }
-
-        function findNextHoliday(market, data) {
-            const today = new Date();
-            let nextHoliday = null;
-            for (let i = 0; i < data.length; i++) {
-                const holiday = data[i];
-                if (holiday['市场'] === market) {
-                    const startDate = new Date(holiday['开始日期']);
-                    if (startDate > today) {
-                        if (!nextHoliday || startDate < new Date(nextHoliday['开始日期'])) {
-                            nextHoliday = holiday;
-                        }
-                    }
+            ],
+            hk: [
+                {
+                    reason: "端午节",
+                    startDate: new Date(2025, 4, 31), // 5月31日
+                    endDate: new Date(2025, 4, 31),    // 5月31日
+                    marketDays: 1,
+                    note: "实际连续休市3天（含周末）"
+                },
+                {
+                    reason: "香港特别行政区成立纪念日",
+                    startDate: new Date(2025, 6, 1), // 7月1日
+                    endDate: new Date(2025, 6, 1),    // 7月1日
+                    marketDays: 1,
+                    note: "仅休市一天"
+                },
+                {
+                    reason: "国庆节/中秋节",
+                    startDate: new Date(2025, 9, 1), // 10月1日
+                    endDate: new Date(2025, 9, 7),    // 10月7日
+                    marketDays: 2,
+                    note: "10月1日和10月7日休市"
                 }
-            }
-            return nextHoliday;
-        }
+            ],
+            us: [
+                {
+                    reason: "六月节",
+                    startDate: new Date(2025, 5, 19), // 6月19日
+                    endDate: new Date(2025, 5, 19),    // 6月19日
+                    marketDays: 1,
+                    note: "全天休市"
+                },
+                {
+                    reason: "美国独立日",
+                    startDate: new Date(2025, 6, 3),  // 7月3日
+                    endDate: new Date(2025, 6, 4),    // 7月4日
+                    marketDays: 1.5,
+                    note: "7月3日下午和7月4日全天休市"
+                },
+                {
+                    reason: "美国劳工节",
+                    startDate: new Date(2025, 8, 1),  // 9月1日
+                    endDate: new Date(2025, 8, 1),    // 9月1日
+                    marketDays: 1,
+                    note: "全天休市"
+                }
+            ]
+        };
 
-        function calculateDaysUntilHoliday(startDate) {
-            const today = new Date();
-            const holidayStart = new Date(startDate);
-            const oneDay = 24 * 60 * 60 * 1000; // 一天的毫秒数
-            return Math.round((holidayStart - today) / oneDay);
+        // 设置当前日期显示
+        function updatePage() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('zh-CN', options);
+            document.getElementById('update-time').textContent = now.toLocaleString('zh-CN');
+            
+            // 更新各市场倒计时
+            updateMarketInfo('a', now);
+            updateMarketInfo('hk', now);
+            updateMarketInfo('us', now);
         }
-
-        function updateHolidayTable() {
-            const parsedData = parseCSV(csvData);
-            const tableBody = document.getElementById('holiday-table-body');
-            const rows = tableBody.getElementsByTagName('tr');
-            for (let i = 0; i < rows.length; i++) {
-                const market = rows[i].cells[0].textContent;
-                const nextHoliday = findNextHoliday(market, parsedData);
-                if (nextHoliday) {
-                    rows[i].cells[1].textContent = nextHoliday['节假日名称'];
-                    const daysUntilHoliday = calculateDaysUntilHoliday(nextHoliday['开始日期']);
-                    const countdownCell = rows[i].cells[2];
-                    countdownCell.textContent = daysUntilHoliday;
-                    if (daysUntilHoliday <= 5) {
-                        countdownCell.classList.add('red-text');
-                    } else {
-                        countdownCell.classList.remove('red-text');
-                    }
-                    const startDate = nextHoliday['开始日期'].replace(/-/g, '.');
-                    const endDate = nextHoliday['结束日期'].replace(/-/g, '.');
-                    rows[i].cells[3].textContent = `${startDate}-${endDate}`;
-                    const duration = nextHoliday['持续时间'].split(':')[0];
-                    rows[i].cells[4].textContent = duration;
+        
+        // 更新指定市场信息
+        function updateMarketInfo(market, now) {
+            // 找到下一个休市安排
+            const nextHoliday = holidays[market].find(h => 
+                h.startDate > now || (h.startDate <= now && h.endDate >= now)
+            );
+            
+            if (nextHoliday) {
+                // 计算倒计时天数
+                let daysDiff = Math.ceil((nextHoliday.startDate - now) / (1000 * 60 * 60 * 24));
+                
+                // 如果已经在休市期间
+                if (now >= nextHoliday.startDate && now <= nextHoliday.endDate) {
+                    daysDiff = 0;
+                }
+                
+                // 更新倒计时显示
+                const countdownElement = document.getElementById(`countdown-${market}`);
+                countdownElement.textContent = daysDiff === 0 ? "今日起休市" : `${daysDiff}天`;
+                
+                // 应用紧急样式
+                if (daysDiff <= 3) {
+                    countdownElement.classList.add('urgent');
                 } else {
-                    rows[i].cells[1].textContent = '暂无休假信息';
-                    rows[i].cells[2].textContent = '暂无休假信息';
-                    rows[i].cells[3].textContent = '暂无休假信息';
-                    rows[i].cells[4].textContent = '暂无休假信息';
+                    countdownElement.classList.remove('urgent');
                 }
             }
         }
-
-        // 页面加载时更新一次
-        updateHolidayTable();
-
-        // 每隔一小时更新一次
-        setInterval(updateHolidayTable, 60 * 60 * 1000);
+        
+        // 初始化页面
+        updatePage();
+        
+        // 每天更新一次数据
+        setInterval(updatePage, 24 * 60 * 60 * 1000);
     </script>
 </body>
-
-</html>    
+</html>
