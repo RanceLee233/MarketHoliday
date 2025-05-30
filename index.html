@@ -204,6 +204,11 @@
             color: #7f8c8d;
         }
         
+        .half-day {
+            background: #fff9e6;
+            border-left: 4px solid #FF9800;
+        }
+        
         .note {
             background: #fff9e6;
             border-left: 4px solid #ffcc00;
@@ -272,7 +277,7 @@
             <h1><i class="fas fa-calendar-alt"></i> 2025年全球股市休市日历</h1>
             <p>实时查看A股、港股及美股市场的休市安排，合理规划您的投资策略</p>
             <div class="current-date">
-                当前日期：<span id="current-date">2025年5月29日</span>
+                当前日期：<span id="current-date">2025年5月30日</span>
             </div>
         </header>
         
@@ -287,7 +292,7 @@
                         <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
                         <div class="info-grid">
                             <div class="info-label">距离休市：</div>
-                            <div class="info-value"><span class="countdown" id="countdown-a">2天</span></div>
+                            <div class="info-value"><span class="countdown" id="countdown-a">1天</span></div>
                             
                             <div class="info-label">休市原因：</div>
                             <div class="info-value">端午节</div>
@@ -339,19 +344,19 @@
                         <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
                         <div class="info-grid">
                             <div class="info-label">距离休市：</div>
-                            <div class="info-value"><span class="countdown" id="countdown-hk">2天</span></div>
+                            <div class="info-value"><span class="countdown" id="countdown-hk">32天</span></div>
                             
                             <div class="info-label">休市原因：</div>
-                            <div class="info-value">端午节</div>
+                            <div class="info-value">香港特别行政区成立纪念日</div>
                             
                             <div class="info-label">休市天数：</div>
                             <div class="info-value"><span class="days-badge" style="background: #e3f2fd; color: #2980b9;">1天</span></div>
                             
                             <div class="info-label">具体日期：</div>
-                            <div class="info-value">2025年5月31日（星期五）</div>
+                            <div class="info-value">2025年7月1日（星期二）</div>
                             
                             <div class="info-label">开市时间：</div>
-                            <div class="info-value">2025年6月2日（星期一）*</div>
+                            <div class="info-value">2025年7月2日（星期三）</div>
                         </div>
                     </div>
                     
@@ -360,23 +365,37 @@
                         <ul class="holiday-list">
                             <li>
                                 <div>
-                                    <div class="holiday-date">7月1日（星期二）</div>
-                                    <div class="holiday-reason">香港特别行政区成立纪念日</div>
+                                    <div class="holiday-date">10月1日（星期三）</div>
+                                    <div class="holiday-reason">国庆日</div>
                                 </div>
                                 <span class="days-badge" style="background: #e3f2fd; color: #2980b9;">1天</span>
                             </li>
                             <li>
                                 <div>
-                                    <div class="holiday-date">10月1日（星期三）、10月7日（星期二）</div>
-                                    <div class="holiday-reason">国庆节/中秋节</div>
+                                    <div class="holiday-date">10月7日（星期二）</div>
+                                    <div class="holiday-reason">中秋节翌日</div>
                                 </div>
-                                <span class="days-badge" style="background: #e3f2fd; color: #2980b9;">2天</span>
+                                <span class="days-badge" style="background: #e3f2fd; color: #2980b9;">1天</span>
+                            </li>
+                            <li>
+                                <div>
+                                    <div class="holiday-date">12月24日（星期三）</div>
+                                    <div class="holiday-reason">平安夜（半日市）</div>
+                                </div>
+                                <span class="days-badge half-day" style="background: #fff9e6; color: #FF9800;">半日</span>
+                            </li>
+                            <li>
+                                <div>
+                                    <div class="holiday-date">12月25日（星期四）</div>
+                                    <div class="holiday-reason">圣诞节</div>
+                                </div>
+                                <span class="days-badge" style="background: #e3f2fd; color: #2980b9;">1天</span>
                             </li>
                         </ul>
                     </div>
                     
                     <div class="note">
-                        <p><i class="fas fa-exclamation-circle"></i> <strong>注意：</strong> 港股端午节仅5月31日（周五）休市，但因6月1日-2日为周末，实际连续休市3天（5月31日至6月2日），6月3日（星期二）起照常开市。</p>
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>重要更新：</strong> 根据香港交易所官方日历，2025年5月31日（端午节）为周六，正常休市无额外放假。港股在2025年12月24日（平安夜）及12月31日（新年前夕）为半日市。</p>
                     </div>
                 </div>
             </div>
@@ -391,7 +410,7 @@
                         <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
                         <div class="info-grid">
                             <div class="info-label">距离休市：</div>
-                            <div class="info-value"><span class="countdown" id="countdown-us">21天</span></div>
+                            <div class="info-value"><span class="countdown" id="countdown-us">20天</span></div>
                             
                             <div class="info-label">休市原因：</div>
                             <div class="info-value">六月节</div>
@@ -435,7 +454,7 @@
         </div>
         
         <footer>
-            <p>数据来源：港美股2025年休市日历（华盛通）、证监会2025年休市安排通知、和讯网等公开信息</p>
+            <p>数据来源：香港交易所2025年日历PDF文件、证监会2025年休市安排通知</p>
             <p>© 2025 全球股市休市日历 | 数据更新时间：<span id="update-time"></span></p>
         </footer>
     </div>
@@ -461,25 +480,46 @@
             ],
             hk: [
                 {
-                    reason: "端午节",
-                    startDate: new Date(2025, 4, 31), // 5月31日
-                    endDate: new Date(2025, 4, 31),    // 5月31日
-                    marketDays: 1,
-                    note: "实际连续休市3天（含周末）"
-                },
-                {
                     reason: "香港特别行政区成立纪念日",
                     startDate: new Date(2025, 6, 1), // 7月1日
                     endDate: new Date(2025, 6, 1),    // 7月1日
                     marketDays: 1,
-                    note: "仅休市一天"
+                    note: "全天休市"
                 },
                 {
-                    reason: "国庆节/中秋节",
+                    reason: "国庆日",
                     startDate: new Date(2025, 9, 1), // 10月1日
+                    endDate: new Date(2025, 9, 1),    // 10月1日
+                    marketDays: 1,
+                    note: "全天休市"
+                },
+                {
+                    reason: "中秋节翌日",
+                    startDate: new Date(2025, 9, 7), // 10月7日
                     endDate: new Date(2025, 9, 7),    // 10月7日
-                    marketDays: 2,
-                    note: "10月1日和10月7日休市"
+                    marketDays: 1,
+                    note: "全天休市"
+                },
+                {
+                    reason: "平安夜",
+                    startDate: new Date(2025, 11, 24), // 12月24日
+                    endDate: new Date(2025, 11, 24),    // 12月24日
+                    marketDays: 0.5,
+                    note: "半日市（上午开市，下午休市）"
+                },
+                {
+                    reason: "圣诞节",
+                    startDate: new Date(2025, 11, 25), // 12月25日
+                    endDate: new Date(2025, 11, 25),    // 12月25日
+                    marketDays: 1,
+                    note: "全天休市"
+                },
+                {
+                    reason: "新年前夕",
+                    startDate: new Date(2025, 11, 31), // 12月31日
+                    endDate: new Date(2025, 11, 31),    // 12月31日
+                    marketDays: 0.5,
+                    note: "半日市（上午开市，下午休市）"
                 }
             ],
             us: [
