@@ -277,7 +277,7 @@
             <h1><i class="fas fa-calendar-alt"></i> 2025年全球股市休市日历</h1>
             <p>实时查看A股、港股及美股市场的休市安排，合理规划您的投资策略</p>
             <div class="current-date">
-                当前日期：<span id="current-date">2025年5月30日</span>
+                当前日期：<span id="current-date">2025年6月6日</span>
             </div>
         </header>
         
@@ -292,19 +292,19 @@
                         <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
                         <div class="info-grid">
                             <div class="info-label">距离休市：</div>
-                            <div class="info-value"><span class="countdown" id="countdown-a">1天</span></div>
+                            <div class="info-value"><span class="countdown" id="countdown-a">117天</span></div>
                             
                             <div class="info-label">休市原因：</div>
-                            <div class="info-value">端午节</div>
+                            <div class="info-value">国庆节/中秋节</div>
                             
                             <div class="info-label">休市天数：</div>
-                            <div class="info-value"><span class="days-badge" style="background: #ffebee; color: #e74c3c;">3天</span></div>
+                            <div class="info-value"><span class="days-badge" style="background: #ffebee; color: #e74c3c;">8天</span></div>
                             
                             <div class="info-label">具体日期：</div>
-                            <div class="info-value">2025年5月31日（星期六）至6月2日（星期一）</div>
+                            <div class="info-value">2025年10月1日（星期三）至10月8日（星期三）</div>
                             
                             <div class="info-label">开市时间：</div>
-                            <div class="info-value">2025年6月3日（星期二）</div>
+                            <div class="info-value">2025年10月9日（星期四）</div>
                         </div>
                     </div>
                     
@@ -313,23 +313,23 @@
                         <ul class="holiday-list">
                             <li>
                                 <div>
-                                    <div class="holiday-date">10月1日（星期三）至10月8日（星期三）</div>
-                                    <div class="holiday-reason">国庆节/中秋节</div>
-                                </div>
-                                <span class="days-badge" style="background: #e3f2fd; color: #1976d2;">8天</span>
-                            </li>
-                            <li>
-                                <div>
                                     <div class="holiday-date">1月28日（星期二）至2月4日（星期二）</div>
                                     <div class="holiday-reason">春节</div>
                                 </div>
                                 <span class="days-badge" style="background: #e3f2fd; color: #1976d2;">8天</span>
                             </li>
+                            <li>
+                                <div>
+                                    <div class="holiday-date">4月4日（星期五）至4月6日（星期日）</div>
+                                    <div class="holiday-reason">清明节</div>
+                                </div>
+                                <span class="days-badge" style="background: #e3f2fd; color: #1976d2;">3天</span>
+                            </li>
                         </ul>
                     </div>
                     
                     <div class="note">
-                        <p><i class="fas fa-exclamation-circle"></i> <strong>注意：</strong> A股在2025年劳动节期间（5月1日至5月5日）已休市5天。端午节休市后，下一次休市为国庆节/中秋节。</p>
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>注意：</strong> A股在2025年端午节期间（5月31日至6月2日）已休市3天。下一次休市为国庆节/中秋节。</p>
                     </div>
                 </div>
             </div>
@@ -344,7 +344,7 @@
                         <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
                         <div class="info-grid">
                             <div class="info-label">距离休市：</div>
-                            <div class="info-value"><span class="countdown" id="countdown-hk">32天</span></div>
+                            <div class="info-value"><span class="countdown" id="countdown-hk">25天</span></div>
                             
                             <div class="info-label">休市原因：</div>
                             <div class="info-value">香港特别行政区成立纪念日</div>
@@ -410,7 +410,7 @@
                         <h3><i class="fas fa-info-circle"></i> 下一个休市安排</h3>
                         <div class="info-grid">
                             <div class="info-label">距离休市：</div>
-                            <div class="info-value"><span class="countdown" id="countdown-us">20天</span></div>
+                            <div class="info-value"><span class="countdown" id="countdown-us">13天</span></div>
                             
                             <div class="info-label">休市原因：</div>
                             <div class="info-value">六月节</div>
@@ -460,22 +460,15 @@
     </div>
     
     <script>
-        // 定义所有休市安排数据
+        // 定义所有休市安排数据（按时间顺序排列）
         const holidays = {
             a: [
-                {
-                    reason: "端午节",
-                    startDate: new Date(2025, 4, 31), // 5月31日
-                    endDate: new Date(2025, 5, 2),    // 6月2日
-                    marketDays: 3,
-                    note: "A股在2025年劳动节期间（5月1日至5月5日）已休市5天"
-                },
                 {
                     reason: "国庆节/中秋节",
                     startDate: new Date(2025, 9, 1), // 10月1日
                     endDate: new Date(2025, 9, 8),    // 10月8日
                     marketDays: 8,
-                    note: "国庆节与中秋节合并休市"
+                    openDate: new Date(2025, 9, 9)    // 10月9日
                 }
             ],
             hk: [
@@ -484,42 +477,35 @@
                     startDate: new Date(2025, 6, 1), // 7月1日
                     endDate: new Date(2025, 6, 1),    // 7月1日
                     marketDays: 1,
-                    note: "全天休市"
+                    openDate: new Date(2025, 6, 2)    // 7月2日
                 },
                 {
                     reason: "国庆日",
                     startDate: new Date(2025, 9, 1), // 10月1日
                     endDate: new Date(2025, 9, 1),    // 10月1日
                     marketDays: 1,
-                    note: "全天休市"
+                    openDate: new Date(2025, 9, 2)    // 10月2日
                 },
                 {
                     reason: "中秋节翌日",
                     startDate: new Date(2025, 9, 7), // 10月7日
                     endDate: new Date(2025, 9, 7),    // 10月7日
                     marketDays: 1,
-                    note: "全天休市"
+                    openDate: new Date(2025, 9, 8)    // 10月8日
                 },
                 {
                     reason: "平安夜",
                     startDate: new Date(2025, 11, 24), // 12月24日
                     endDate: new Date(2025, 11, 24),    // 12月24日
                     marketDays: 0.5,
-                    note: "半日市（上午开市，下午休市）"
+                    openDate: new Date(2025, 11, 25)    // 12月25日
                 },
                 {
                     reason: "圣诞节",
                     startDate: new Date(2025, 11, 25), // 12月25日
                     endDate: new Date(2025, 11, 25),    // 12月25日
                     marketDays: 1,
-                    note: "全天休市"
-                },
-                {
-                    reason: "新年前夕",
-                    startDate: new Date(2025, 11, 31), // 12月31日
-                    endDate: new Date(2025, 11, 31),    // 12月31日
-                    marketDays: 0.5,
-                    note: "半日市（上午开市，下午休市）"
+                    openDate: new Date(2025, 11, 26)    // 12月26日
                 }
             ],
             us: [
@@ -528,28 +514,35 @@
                     startDate: new Date(2025, 5, 19), // 6月19日
                     endDate: new Date(2025, 5, 19),    // 6月19日
                     marketDays: 1,
-                    note: "全天休市"
+                    openDate: new Date(2025, 5, 20)    // 6月20日
                 },
                 {
-                    reason: "美国独立日",
+                    reason: "独立日（提前休市）",
                     startDate: new Date(2025, 6, 3),  // 7月3日
-                    endDate: new Date(2025, 6, 4),    // 7月4日
-                    marketDays: 1.5,
-                    note: "7月3日下午和7月4日全天休市"
+                    endDate: new Date(2025, 6, 3),     // 7月3日
+                    marketDays: 0.5,
+                    openDate: new Date(2025, 6, 4)     // 7月4日
                 },
                 {
-                    reason: "美国劳工节",
+                    reason: "独立日",
+                    startDate: new Date(2025, 6, 4),  // 7月4日
+                    endDate: new Date(2025, 6, 4),    // 7月4日
+                    marketDays: 1,
+                    openDate: new Date(2025, 6, 7)     // 7月7日（周一）
+                },
+                {
+                    reason: "劳工节",
                     startDate: new Date(2025, 8, 1),  // 9月1日
                     endDate: new Date(2025, 8, 1),    // 9月1日
                     marketDays: 1,
-                    note: "全天休市"
+                    openDate: new Date(2025, 8, 2)     // 9月2日
                 }
             ]
         };
 
         // 设置当前日期显示
         function updatePage() {
-            const now = new Date();
+            const now = new Date(); // 使用真实当前日期
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             document.getElementById('current-date').textContent = now.toLocaleDateString('zh-CN', options);
             document.getElementById('update-time').textContent = now.toLocaleString('zh-CN');
@@ -562,26 +555,22 @@
         
         // 更新指定市场信息
         function updateMarketInfo(market, now) {
-            // 找到下一个休市安排
+            // 找到下一个休市安排（过滤掉已过去的节日）
             const nextHoliday = holidays[market].find(h => 
-                h.startDate > now || (h.startDate <= now && h.endDate >= now)
+                h.startDate > now
             );
             
             if (nextHoliday) {
                 // 计算倒计时天数
-                let daysDiff = Math.ceil((nextHoliday.startDate - now) / (1000 * 60 * 60 * 24));
-                
-                // 如果已经在休市期间
-                if (now >= nextHoliday.startDate && now <= nextHoliday.endDate) {
-                    daysDiff = 0;
-                }
+                const diffTime = nextHoliday.startDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 
                 // 更新倒计时显示
                 const countdownElement = document.getElementById(`countdown-${market}`);
-                countdownElement.textContent = daysDiff === 0 ? "今日起休市" : `${daysDiff}天`;
+                countdownElement.textContent = diffDays;
                 
                 // 应用紧急样式
-                if (daysDiff <= 3) {
+                if (diffDays <= 3) {
                     countdownElement.classList.add('urgent');
                 } else {
                     countdownElement.classList.remove('urgent');
